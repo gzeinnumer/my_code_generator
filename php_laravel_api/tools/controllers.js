@@ -1,0 +1,105 @@
+var fs = require('fs');
+var t = require('../params.js');
+
+var name = t.p1;
+var table = t.p3;
+var column = t.p2;
+
+var validator = "";
+var objectData = "";
+for(var i = 0; i < column.length; i++){
+  validator += "                '"+column[i]+"' => 'required|string',\n";
+  objectData += "            $result->"+column[i]+" = $r->"+column[i]+";\n"
+}
+validator = validator.slice(0, -2);
+
+var content = "<?php\n\n";
+content += "namespace App\\Http\\Controllers\\API;\n\n";
+content += "use App\\Models\\API\\BarangModel;\n";
+content += "use Illuminate\\Http\\Request;\n";
+content += "use Illuminate\\Support\\Facades\\DB;\n";
+content += "use Illuminate\\Support\\Facades\\Validator;\n\n";
+content += "class "+name+"Controller extends BaseController\n";
+content += "{\n";
+content += "    public function insert(Request $r) {\n";
+content += "        try {\n";
+content += "            $input = array(\n";
+// content += "                'name' => 'required|string|min:1'\n";
+content += validator;
+content += "\n            );\n\n";
+content += "            $validator = Validator::make($r->all(), $input);\n\n";
+content += "            if($validator->fails()){\n";
+content += "                $apiResponse = $this->getApiResponse(0);\n";
+content += "                $apiResponse->message = $validator->getMessageBag();\n";
+content += "                return $this->responseFailed($apiResponse);\n";
+content += "            }\n\n";
+content += "            DB::beginTransaction();\n\n";
+content += "            "+name+"Model::create($r->all());\n\n";
+content += "            DB::commit();\n\n";
+content += "            $apiResponse = $this->getApiResponse(1);\n";
+content += "            return $this->responseSuccess($apiResponse);\n";
+content += "        }  catch (\\Throwable $th) {\n";
+content += "            DB::rollBack();\n";
+content += "            return $this->responseError($th);\n";
+content += "        }\n";
+content += "    }\n\n";
+content += "    public function all() {\n";
+content += "        try {\n";
+content += "            $result = "+name+"Model::all();\n\n";
+content += "            return $this->toList($result, 1, 0);\n";
+content += "        } catch (\\Throwable $th) {\n";
+content += "            return $this->responseError($th);\n";
+content += "        }\n";
+content += "    }\n\n";
+content += "    public function update(Request $r, $id) {\n";
+content += "        try {\n";
+content += "            $input = array(\n";
+// content += "                'name' => 'required|string'\n";
+content += validator;
+content += "\n            );\n\n";
+content += "            $validator = Validator::make($r->all(), $input);\n\n";
+content += "            if($validator->fails()){\n";
+content += "                $apiResponse = $this->getApiResponse(0);\n";
+content += "                $apiResponse->message = $validator->getMessageBag();\n";
+content += "                return $this->responseFailed($apiResponse);\n";
+content += "            }\n\n";
+content += "            DB::beginTransaction();\n\n";
+content += "            $result = "+name+"Model::find($id);\n";
+// content += "            $result->name = $r->name;\n";
+content += objectData;
+content += "            $result->save();\n\n";
+content += "            DB::commit();\n\n";
+content += "            $apiResponse = $this->getApiResponse(1);\n";
+content += "            return $this->responseSuccess($apiResponse);\n";
+content += "        }  catch (\\Throwable $th) {\n";
+content += "            DB::rollBack();\n";
+content += "            return $this->responseError($th);\n";
+content += "        }\n";
+content += "    }\n\n";
+content += "    public function delete($id) {\n";
+content += "        try {\n";
+content += "            $result = "+name+"Model::find($id);\n\n";
+content += "            DB::beginTransaction();\n\n";
+content += "            $result->delete();\n\n";
+content += "            DB::commit();\n\n";
+content += "            $apiResponse = $this->getApiResponse(1);\n";
+content += "            return $this->responseSuccess($apiResponse);\n";
+content += "        } catch (\\Throwable $th) {\n";
+content += "            return $this->responseError($th);\n";
+content += "        }\n";
+content += "    }\n\n";
+content += "    public function find($id) {\n";
+content += "        try {\n";
+content += "            $result = "+name+"Model::find($id);\n\n";
+content += "            return $this->toObject($result, 1, 0);\n";
+content += "        } catch (\\Throwable $th) {\n";
+content += "            return $this->responseError($th);\n";
+content += "        }\n";
+content += "    }\n";
+content += "}\n";
+
+fs.writeFile('result/Controller/API/'+name+'Controller.php', content, function(err, result) {
+  if(err) console.log('error', err);
+});
+
+console.log('result/Controller/API/'+name+'Controller.php -> created');
