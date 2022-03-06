@@ -1,0 +1,11 @@
+php artisan make:resource Resource
+
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'email_verified_at' => $this->email_verified_at,
+            'id_user_type' => $this->id_user_type,
+            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d H:i:s'),
+        ];
