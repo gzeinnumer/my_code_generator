@@ -12,7 +12,7 @@ run those file in terminal
 
 ---
 
-- PHP Laravel Api
+#### PHP Laravel Api
 
 Edit file `params.js` in `php_laravel_api/params.js`
 
@@ -23,7 +23,7 @@ cd php_laravel_api
 node run.js
 ```
 
-- PHP Laravel Resource
+#### PHP Laravel Resource
 
 Edit file `params.txt` in `php_laravel_resource/params.txt`
 
