@@ -31,4 +31,4 @@ fs.writeFile('result/Models/API/'+name+'Model.php', content, function(err, resul
   if(err) console.log('error', err);
 });
 
-console.log('result/Models/API/'+name+'Model.php -> created');
+console.log('php_laravel_api/result/Models/API/'+name+'Model.php -> created');

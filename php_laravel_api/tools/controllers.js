@@ -102,4 +102,4 @@ fs.writeFile('result/Controller/API/'+name+'Controller.php', content, function(e
   if(err) console.log('error', err);
 });
 
-console.log('result/Controller/API/'+name+'Controller.php -> created');
+console.log('php_laravel_api/result/Controller/API/'+name+'Controller.php -> created');

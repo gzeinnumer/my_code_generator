@@ -19,4 +19,4 @@ fs.writeFile('result/routes/api.php', content, function(err, result) {
   if(err) console.log('error', err);
 });
 
-console.log('result/web.php -> created');
+console.log('php_laravel_api/result/api.php -> created');

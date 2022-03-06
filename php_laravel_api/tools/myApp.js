@@ -24,4 +24,4 @@ fs.writeFile('result/MyApp.php', content, function(err, result) {
    if(err) console.log('error', err);
 });
       
-console.log('result/MyApp.php -> created',);
+console.log('php_laravel_api/result/MyApp.php -> created',);
