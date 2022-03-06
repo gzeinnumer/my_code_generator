@@ -15,7 +15,6 @@ validator = validator.slice(0, -2);
 
 var content = "<?php\n\n";
 content += "namespace App\\Http\\Controllers\\API;\n\n";
-content += "use App\\Models\\API\\BarangModel;\n";
 content += "use Illuminate\\Http\\Request;\n";
 content += "use Illuminate\\Support\\Facades\\DB;\n";
 content += "use Illuminate\\Support\\Facades\\Validator;\n\n";

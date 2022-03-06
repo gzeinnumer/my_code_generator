@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\API\BarangModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class BarangController extends BaseController
+class MApiResponseController extends BaseController
 {
     public function insert(Request $r) {
         try {
             $input = array(
-                'name' => 'required|string',
-                'name2' => 'required|string'
+                'id' => 'required|string',
+                'method' => 'required|string',
+                'end_point' => 'required|string',
+                'response_number' => 'required|string',
+                'title' => 'required|string',
+                'message' => 'required|string',
+                'created_at' => 'required|string',
+                'updated_at' => 'required|string'
             );
 
             $validator = Validator::make($r->all(), $input);
@@ -26,7 +31,7 @@ class BarangController extends BaseController
 
             DB::beginTransaction();
 
-            BarangModel::create($r->all());
+            MApiResponseModel::create($r->all());
 
             DB::commit();
 
@@ -40,7 +45,7 @@ class BarangController extends BaseController
 
     public function all() {
         try {
-            $result = BarangModel::all();
+            $result = MApiResponseModel::all();
 
             return $this->toList($result, 1, 0);
         } catch (\Throwable $th) {
@@ -51,8 +56,14 @@ class BarangController extends BaseController
     public function update(Request $r, $id) {
         try {
             $input = array(
-                'name' => 'required|string',
-                'name2' => 'required|string'
+                'id' => 'required|string',
+                'method' => 'required|string',
+                'end_point' => 'required|string',
+                'response_number' => 'required|string',
+                'title' => 'required|string',
+                'message' => 'required|string',
+                'created_at' => 'required|string',
+                'updated_at' => 'required|string'
             );
 
             $validator = Validator::make($r->all(), $input);
@@ -65,9 +76,15 @@ class BarangController extends BaseController
 
             DB::beginTransaction();
 
-            $result = BarangModel::find($id);
-            $result->name = $r->name;
-            $result->name2 = $r->name2;
+            $result = MApiResponseModel::find($id);
+            $result->id = $r->id;
+            $result->method = $r->method;
+            $result->end_point = $r->end_point;
+            $result->response_number = $r->response_number;
+            $result->title = $r->title;
+            $result->message = $r->message;
+            $result->created_at = $r->created_at;
+            $result->updated_at = $r->updated_at;
             $result->save();
 
             DB::commit();
@@ -82,7 +99,7 @@ class BarangController extends BaseController
 
     public function delete($id) {
         try {
-            $result = BarangModel::find($id);
+            $result = MApiResponseModel::find($id);
 
             DB::beginTransaction();
 
@@ -99,7 +116,7 @@ class BarangController extends BaseController
 
     public function find($id) {
         try {
-            $result = BarangModel::find($id);
+            $result = MApiResponseModel::find($id);
 
             return $this->toObject($result, 1, 0);
         } catch (\Throwable $th) {
